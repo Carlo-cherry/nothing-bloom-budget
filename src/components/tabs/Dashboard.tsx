@@ -31,10 +31,10 @@ export function Dashboard() {
           <div className="space-y-2">
             <div className="flex justify-between items-center">
               <span className="text-2xl font-bold text-primary">
-                ${stats.totalExpenses.toFixed(2)}
+                ₹{stats.totalExpenses.toFixed(2)}
               </span>
               <span className="text-muted-foreground">
-                / ${stats.monthlyBudget.toFixed(2)}
+                / ₹{stats.monthlyBudget.toFixed(2)}
               </span>
             </div>
             <div className="w-full bg-muted rounded-full h-2">
@@ -59,7 +59,7 @@ export function Dashboard() {
               <span className="text-sm text-muted-foreground">Friends Owe You</span>
             </div>
             <p className="text-xl font-bold text-green-400">
-              ${stats.friendsOwed.toFixed(2)}
+              ₹{stats.friendsOwed.toFixed(2)}
             </p>
           </CardContent>
         </Card>
@@ -71,7 +71,7 @@ export function Dashboard() {
               <span className="text-sm text-muted-foreground">You Owe</span>
             </div>
             <p className="text-xl font-bold text-red-400">
-              ${stats.owedToFriends.toFixed(2)}
+              ₹{stats.owedToFriends.toFixed(2)}
             </p>
           </CardContent>
         </Card>
@@ -95,7 +95,7 @@ export function Dashboard() {
                   <p className="text-sm text-muted-foreground">{transaction.category}</p>
                 </div>
                 <span className="font-bold text-red-400">
-                  ${Math.abs(transaction.amount).toFixed(2)}
+                  ₹{Math.abs(transaction.amount).toFixed(2)}
                 </span>
               </div>
             ))}

@@ -6,7 +6,11 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Users, DollarSign } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Plus, Users, DollarSign, CalendarIcon, Edit, Trash2 } from "lucide-react";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 interface GroupPayment {
   id: string;
@@ -14,7 +18,7 @@ interface GroupPayment {
   totalAmount: number;
   paidBy: string;
   splitType: "equal" | "custom";
-  participants: { name: string; amount: number; includeSelf: boolean }[];
+  participants: { name: string; amount: number; includeSelf: boolean; settled: boolean }[];
   date: string;
 }
 
@@ -27,23 +31,25 @@ export function GroupPayments() {
       paidBy: "You",
       splitType: "equal",
       participants: [
-        { name: "Alice", amount: 30.00, includeSelf: false },
-        { name: "Bob", amount: 30.00, includeSelf: false },
-        { name: "Charlie", amount: 30.00, includeSelf: false },
-        { name: "You", amount: 30.00, includeSelf: true }
+        { name: "Alice", amount: 30.00, includeSelf: false, settled: false },
+        { name: "Bob", amount: 30.00, includeSelf: false, settled: true },
+        { name: "Charlie", amount: 30.00, includeSelf: false, settled: false },
+        { name: "You", amount: 30.00, includeSelf: true, settled: true }
       ],
       date: "2024-01-20"
     }
   ]);
 
   const [showForm, setShowForm] = useState(false);
+  const [editingPayment, setEditingPayment] = useState<GroupPayment | null>(null);
   const [formData, setFormData] = useState({
     description: "",
     totalAmount: "",
     paidBy: "You",
     splitType: "equal" as "equal" | "custom",
     includeSelf: true,
-    selectedFriends: [] as string[]
+    selectedFriends: [] as string[],
+    date: undefined as Date | undefined
   });
 
   const availableFriends = ["Alice", "Bob", "Charlie", "Diana", "Eve"];
@@ -62,30 +68,36 @@ export function GroupPayments() {
         ...formData.selectedFriends.map(friend => ({
           name: friend,
           amount: amountPerPerson,
-          includeSelf: false
+          includeSelf: false,
+          settled: false
         })),
-        ...(formData.includeSelf ? [{ name: "You", amount: amountPerPerson, includeSelf: true }] : [])
+        ...(formData.includeSelf ? [{ name: "You", amount: amountPerPerson, includeSelf: true, settled: true }] : [])
       ];
     } else {
       // For custom split, we'll implement this later
       participants = formData.selectedFriends.map(friend => ({
         name: friend,
         amount: 0,
-        includeSelf: false
+        includeSelf: false,
+        settled: false
       }));
     }
 
     const newPayment: GroupPayment = {
-      id: Date.now().toString(),
+      id: editingPayment?.id || Date.now().toString(),
       description: formData.description,
       totalAmount,
       paidBy: formData.paidBy,
       splitType: formData.splitType,
       participants,
-      date: new Date().toISOString().split('T')[0]
+      date: formData.date ? formData.date.toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
     };
 
-    setPayments([newPayment, ...payments]);
+    if (editingPayment) {
+      setPayments(payments.map(p => p.id === editingPayment.id ? newPayment : p));
+    } else {
+      setPayments([newPayment, ...payments]);
+    }
     resetForm();
   };
 
@@ -96,9 +108,11 @@ export function GroupPayments() {
       paidBy: "You",
       splitType: "equal",
       includeSelf: true,
-      selectedFriends: []
+      selectedFriends: [],
+      date: undefined
     });
     setShowForm(false);
+    setEditingPayment(null);
   };
 
   const toggleFriend = (friend: string) => {
@@ -108,6 +122,39 @@ export function GroupPayments() {
         ? prev.selectedFriends.filter(f => f !== friend)
         : [...prev.selectedFriends, friend]
     }));
+  };
+
+  const handleEdit = (payment: GroupPayment) => {
+    setFormData({
+      description: payment.description,
+      totalAmount: payment.totalAmount.toString(),
+      paidBy: payment.paidBy,
+      splitType: payment.splitType,
+      includeSelf: payment.participants.some(p => p.includeSelf),
+      selectedFriends: payment.participants.filter(p => !p.includeSelf).map(p => p.name),
+      date: payment.date ? new Date(payment.date) : undefined
+    });
+    setEditingPayment(payment);
+    setShowForm(true);
+  };
+
+  const handleDelete = (id: string) => {
+    setPayments(payments.filter(p => p.id !== id));
+  };
+
+  const toggleSettle = (paymentId: string, participantIndex: number) => {
+    setPayments(payments.map(payment => 
+      payment.id === paymentId 
+        ? {
+            ...payment,
+            participants: payment.participants.map((participant, index) =>
+              index === participantIndex 
+                ? { ...participant, settled: !participant.settled }
+                : participant
+            )
+          }
+        : payment
+    ));
   };
 
   return (
@@ -130,7 +177,7 @@ export function GroupPayments() {
       {showForm && (
         <Card className="surface-elevated">
           <CardHeader>
-            <CardTitle>Create Group Payment</CardTitle>
+            <CardTitle>{editingPayment ? "Edit Group Payment" : "Create Group Payment"}</CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -226,7 +273,7 @@ export function GroupPayments() {
                 <div className="p-3 rounded surface-glow">
                   <p className="text-sm text-muted-foreground mb-2">Split Preview:</p>
                   <p className="text-sm">
-                    Each person pays: ${(
+                    Each person pays: ₹{(
                       parseFloat(formData.totalAmount || "0") / 
                       (formData.selectedFriends.length + (formData.includeSelf ? 1 : 0))
                     ).toFixed(2)}
@@ -234,9 +281,36 @@ export function GroupPayments() {
                 </div>
               )}
 
+              <div>
+                <Label htmlFor="date">Date</Label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className={cn(
+                        "w-full justify-start text-left font-normal",
+                        !formData.date && "text-muted-foreground"
+                      )}
+                    >
+                      <CalendarIcon size={16} className="mr-2" />
+                      {formData.date ? format(formData.date, "PPP") : <span>Pick a date</span>}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={formData.date}
+                      onSelect={(date) => setFormData({...formData, date})}
+                      initialFocus
+                      className="p-3 pointer-events-auto"
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
+
               <div className="flex gap-2">
                 <Button type="submit" className="glow-primary" disabled={formData.selectedFriends.length === 0}>
-                  Create Group Payment
+                  {editingPayment ? "Update Group Payment" : "Create Group Payment"}
                 </Button>
                 <Button type="button" variant="outline" onClick={resetForm}>
                   Cancel
@@ -258,10 +332,30 @@ export function GroupPayments() {
                     Paid by {payment.paidBy} • {new Date(payment.date).toLocaleDateString()}
                   </div>
                 </div>
-                <div className="text-right">
-                  <div className="font-bold text-lg">${payment.totalAmount.toFixed(2)}</div>
-                  <div className="text-xs text-muted-foreground">
-                    {payment.splitType === "equal" ? "Equal Split" : "Custom Split"}
+                <div className="flex items-center gap-2">
+                  <div className="text-right">
+                    <div className="font-bold text-lg">₹{payment.totalAmount.toFixed(2)}</div>
+                    <div className="text-xs text-muted-foreground">
+                      {payment.splitType === "equal" ? "Equal Split" : "Custom Split"}
+                    </div>
+                  </div>
+                  <div className="flex gap-1">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleEdit(payment)}
+                      className="h-8 w-8 p-0"
+                    >
+                      <Edit size={14} />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleDelete(payment.id)}
+                      className="h-8 w-8 p-0 text-destructive hover:text-destructive"
+                    >
+                      <Trash2 size={14} />
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -272,8 +366,23 @@ export function GroupPayments() {
                     <div className="flex items-center gap-2">
                       <Users size={14} className="text-muted-foreground" />
                       <span className="text-sm">{participant.name}</span>
+                      {participant.settled && (
+                        <span className="text-xs bg-green-900/20 text-green-400 px-2 py-1 rounded">Settled</span>
+                      )}
                     </div>
-                    <span className="text-sm font-medium">${participant.amount.toFixed(2)}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-medium">₹{participant.amount.toFixed(2)}</span>
+                      {!participant.includeSelf && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => toggleSettle(payment.id, index)}
+                          className={`h-6 text-xs ${participant.settled ? 'bg-green-900/20 border-green-400 text-green-400' : ''}`}
+                        >
+                          {participant.settled ? 'Settled' : 'Settle'}
+                        </Button>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>

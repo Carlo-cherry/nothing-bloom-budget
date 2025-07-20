@@ -87,8 +87,8 @@ export function FriendPayments() {
               <div className={`font-bold text-lg flex items-center gap-1 ${
                 isMyPayment ? 'text-green-400' : 'text-red-400'
               }`}>
-                {isMyPayment ? <ArrowLeft size={16} /> : <ArrowRight size={16} />}
-                ${payment.amount.toFixed(2)}
+                 {isMyPayment ? <ArrowLeft size={16} /> : <ArrowRight size={16} />}
+                ₹{payment.amount.toFixed(2)}
               </div>
               <div className="text-xs text-muted-foreground">
                 {payment.settled ? 'Settled' : 'Pending'}
@@ -123,7 +123,7 @@ export function FriendPayments() {
         <Card className="surface-elevated border-green-400/20">
           <CardContent className="p-4 text-center">
             <div className="text-green-400 font-bold text-xl">
-              ${pendingOwed.toFixed(2)}
+              ₹{pendingOwed.toFixed(2)}
             </div>
             <div className="text-sm text-muted-foreground">Friends owe you</div>
           </CardContent>
@@ -132,7 +132,7 @@ export function FriendPayments() {
         <Card className="surface-elevated border-red-400/20">
           <CardContent className="p-4 text-center">
             <div className="text-red-400 font-bold text-xl">
-              ${pendingToReturn.toFixed(2)}
+              ₹{pendingToReturn.toFixed(2)}
             </div>
             <div className="text-sm text-muted-foreground">You owe friends</div>
           </CardContent>

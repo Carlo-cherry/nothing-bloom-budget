@@ -5,7 +5,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Plus, Edit, Trash2 } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Plus, Edit, Trash2, CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 interface Expense {
   id: string;
@@ -41,7 +45,7 @@ export function PersonalExpenses() {
   const [formData, setFormData] = useState({
     category: "",
     paymentMode: "",
-    date: "",
+    date: undefined as Date | undefined,
     description: "",
     amount: ""
   });
@@ -56,7 +60,7 @@ export function PersonalExpenses() {
       id: editingExpense?.id || Date.now().toString(),
       category: formData.category,
       paymentMode: formData.paymentMode,
-      date: formData.date,
+      date: formData.date ? formData.date.toISOString().split('T')[0] : "",
       description: formData.description,
       amount: parseFloat(formData.amount)
     };
@@ -71,7 +75,7 @@ export function PersonalExpenses() {
   };
 
   const resetForm = () => {
-    setFormData({ category: "", paymentMode: "", date: "", description: "", amount: "" });
+    setFormData({ category: "", paymentMode: "", date: undefined, description: "", amount: "" });
     setShowForm(false);
     setEditingExpense(null);
   };
@@ -80,7 +84,7 @@ export function PersonalExpenses() {
     setFormData({
       category: expense.category,
       paymentMode: expense.paymentMode,
-      date: expense.date,
+      date: expense.date ? new Date(expense.date) : undefined,
       description: expense.description,
       amount: expense.amount.toString()
     });
@@ -148,12 +152,29 @@ export function PersonalExpenses() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="date">Date</Label>
-                  <Input
-                    type="date"
-                    value={formData.date}
-                    onChange={(e) => setFormData({...formData, date: e.target.value})}
-                    required
-                  />
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-full justify-start text-left font-normal",
+                          !formData.date && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon size={16} className="mr-2" />
+                        {formData.date ? format(formData.date, "PPP") : <span>Pick a date</span>}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={formData.date}
+                        onSelect={(date) => setFormData({...formData, date})}
+                        initialFocus
+                        className="p-3 pointer-events-auto"
+                      />
+                    </PopoverContent>
+                  </Popover>
                 </div>
                 <div>
                   <Label htmlFor="amount">Amount</Label>
@@ -208,7 +229,7 @@ export function PersonalExpenses() {
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="font-bold text-lg">${expense.amount.toFixed(2)}</span>
+                  <span className="font-bold text-lg">₹{expense.amount.toFixed(2)}</span>
                   <div className="flex gap-1">
                     <Button
                       variant="ghost"
