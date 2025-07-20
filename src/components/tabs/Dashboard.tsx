@@ -22,7 +22,7 @@ export function Dashboard() {
       </div>
 
       {/* Budget Overview */}
-      <Card className="surface-elevated border-primary/20 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
+      <Card className="surface-dark border-primary/20 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] hover:border-primary/40">
         <CardHeader className="pb-2">
           <CardTitle className="text-xl flex items-center gap-3">
             <div className="p-2 rounded-full bg-primary/10 border border-primary/20">
@@ -56,7 +56,7 @@ export function Dashboard() {
 
       {/* Quick Stats */}
       <div className="grid grid-cols-2 gap-4">
-        <Card className="surface-elevated border-green-400/20 hover:border-green-400/40 transition-all duration-300 hover:scale-[1.02] group">
+        <Card className="surface-dark border-green-400/20 hover:border-green-400/40 transition-all duration-300 hover:scale-[1.02] group">
           <CardContent className="p-5">
             <div className="flex items-center gap-3 mb-3">
               <div className="p-2 rounded-full bg-green-400/10 border border-green-400/20 group-hover:bg-green-400/20 transition-colors">
@@ -70,7 +70,7 @@ export function Dashboard() {
           </CardContent>
         </Card>
 
-        <Card className="surface-elevated border-red-400/20 hover:border-red-400/40 transition-all duration-300 hover:scale-[1.02] group">
+        <Card className="surface-dark border-red-400/20 hover:border-red-400/40 transition-all duration-300 hover:scale-[1.02] group">
           <CardContent className="p-5">
             <div className="flex items-center gap-3 mb-3">
               <div className="p-2 rounded-full bg-red-400/10 border border-red-400/20 group-hover:bg-red-400/20 transition-colors">
@@ -86,7 +86,7 @@ export function Dashboard() {
       </div>
 
       {/* Recent Transactions */}
-      <Card className="surface-elevated border-primary/10 shadow-lg">
+      <Card className="surface-dark border-primary/10 shadow-lg hover:border-primary/30 transition-all duration-300">
         <CardHeader>
           <CardTitle className="text-xl flex items-center gap-3">
             <div className="w-2 h-6 bg-gradient-to-b from-primary to-primary/60 rounded-full"></div>
@@ -100,7 +100,7 @@ export function Dashboard() {
               { description: "Movie tickets", amount: -25.00, category: "Entertainment" },
               { description: "Gas station", amount: -45.75, category: "Transport" },
             ].map((transaction, index) => (
-              <div key={index} className="flex justify-between items-center p-4 rounded-lg surface-glow border border-border/50 hover:border-primary/30 transition-all duration-200 hover:scale-[1.01] group">
+              <div key={index} className="flex justify-between items-center p-4 rounded-lg surface-darker border border-border/30 hover:border-primary/30 transition-all duration-200 hover:scale-[1.01] group">
                 <div>
                   <p className="font-semibold text-foreground group-hover:text-primary transition-colors">{transaction.description}</p>
                   <p className="text-sm text-muted-foreground font-medium">{transaction.category}</p>

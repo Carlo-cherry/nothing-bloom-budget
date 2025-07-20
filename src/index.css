@@ -7,33 +7,33 @@
 @layer base {
   :root {
     /* Nothing Phone Dark Theme */
-    --background: 222 84% 4.9%;
+    --background: 220 27% 8%;
     --foreground: 210 40% 98%;
 
-    --card: 225 84% 6%;
+    --card: 220 27% 12%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 225 84% 6%;
+    --popover: 220 27% 12%;
     --popover-foreground: 210 40% 98%;
 
     /* Nothing Electric Blue */
     --primary: 195 100% 50%;
     --primary-foreground: 222 84% 4.9%;
 
-    --secondary: 225 84% 10%;
+    --secondary: 220 27% 16%;
     --secondary-foreground: 210 40% 98%;
 
-    --muted: 225 84% 8%;
+    --muted: 220 27% 14%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 225 84% 12%;
+    --accent: 220 27% 18%;
     --accent-foreground: 195 100% 50%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 225 84% 12%;
-    --input: 225 84% 8%;
+    --border: 220 27% 18%;
+    --input: 220 27% 14%;
     --ring: 195 100% 50%;
 
     --radius: 0.75rem;
@@ -41,10 +41,12 @@
     /* Custom Nothing Phone Variables */
     --glow-primary: 195 100% 50%;
     --glow-primary-soft: 195 100% 70%;
-    --surface-elevated: 225 84% 8%;
-    --surface-overlay: 225 84% 12%;
+    --surface-elevated: 220 27% 14%;
+    --surface-overlay: 220 27% 18%;
     --nothing-blue: 195 100% 50%;
     --nothing-blue-soft: 195 80% 60%;
+    --card-dark: 220 27% 10%;
+    --card-darker: 220 27% 8%;
     --gradient-glow: linear-gradient(135deg, hsla(var(--glow-primary), 0.1), hsla(var(--glow-primary), 0.05));
     --gradient-surface: linear-gradient(145deg, hsla(var(--surface-elevated), 1), hsla(var(--card), 1));
     --shadow-glow: 0 0 20px hsla(var(--glow-primary), 0.3);
@@ -123,9 +125,19 @@
   }
   
   .surface-elevated {
-    background: linear-gradient(145deg, hsla(var(--surface-elevated), 0.8), hsla(var(--card), 0.9));
+    background: linear-gradient(145deg, hsl(var(--card)), hsl(var(--card-dark)));
     backdrop-filter: blur(10px);
     border: 1px solid hsla(var(--border), 0.5);
+  }
+  
+  .surface-dark {
+    background: hsl(var(--card-dark));
+    border: 1px solid hsla(var(--border), 0.3);
+  }
+  
+  .surface-darker {
+    background: hsl(var(--card-darker));
+    border: 1px solid hsla(var(--border), 0.2);
   }
   
   .surface-glow {

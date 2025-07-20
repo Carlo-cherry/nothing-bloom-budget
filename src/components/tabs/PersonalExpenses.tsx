@@ -116,7 +116,7 @@ export function PersonalExpenses() {
       </div>
 
       {showForm && (
-        <Card className="surface-elevated border-primary/20 shadow-xl animate-in slide-in-from-top-4 duration-300">
+        <Card className="surface-dark border-primary/20 shadow-xl animate-in slide-in-from-top-4 duration-300 hover:border-primary/40 transition-all">
           <CardHeader>
             <CardTitle className="text-xl flex items-center gap-3">
               <div className="w-2 h-6 bg-gradient-to-b from-primary to-primary/60 rounded-full"></div>
@@ -219,7 +219,7 @@ export function PersonalExpenses() {
 
       <div className="space-y-3">
         {expenses.map((expense) => (
-          <Card key={expense.id} className="surface-elevated border-border/50 hover:border-primary/30 transition-all duration-200 hover:scale-[1.01] group shadow-md hover:shadow-lg">
+          <Card key={expense.id} className="surface-dark border-border/30 hover:border-primary/30 transition-all duration-200 hover:scale-[1.01] group shadow-md hover:shadow-lg">
             <CardContent className="p-5">
               <div className="flex justify-between items-start">
                 <div className="flex-1">

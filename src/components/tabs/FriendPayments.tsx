@@ -65,7 +65,7 @@ export function FriendPayments() {
   };
 
   const PaymentCard = ({ payment, isMyPayment }: { payment: Payment; isMyPayment: boolean }) => (
-    <Card className="surface-elevated border-border/50 hover:border-primary/30 transition-all duration-200 hover:scale-[1.01] group shadow-md hover:shadow-lg">
+    <Card className="surface-dark border-border/30 hover:border-primary/30 transition-all duration-200 hover:scale-[1.01] group shadow-md hover:shadow-lg">
       <CardContent className="p-5">
         <div className="flex justify-between items-start">
           <div className="flex-1">
@@ -124,7 +124,7 @@ export function FriendPayments() {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-2 gap-4">
-        <Card className="surface-elevated border-green-400/20 hover:border-green-400/40 transition-all duration-300 hover:scale-[1.02] group shadow-lg">
+        <Card className="surface-dark border-green-400/20 hover:border-green-400/40 transition-all duration-300 hover:scale-[1.02] group shadow-lg">
           <CardContent className="p-5 text-center">
             <div className="text-green-400 font-bold text-2xl drop-shadow-sm group-hover:scale-105 transition-transform">
               ₹{pendingOwed.toFixed(2)}
@@ -133,7 +133,7 @@ export function FriendPayments() {
           </CardContent>
         </Card>
         
-        <Card className="surface-elevated border-red-400/20 hover:border-red-400/40 transition-all duration-300 hover:scale-[1.02] group shadow-lg">
+        <Card className="surface-dark border-red-400/20 hover:border-red-400/40 transition-all duration-300 hover:scale-[1.02] group shadow-lg">
           <CardContent className="p-5 text-center">
             <div className="text-red-400 font-bold text-2xl drop-shadow-sm group-hover:scale-105 transition-transform">
               ₹{pendingToReturn.toFixed(2)}
@@ -157,7 +157,7 @@ export function FriendPayments() {
             <PaymentCard key={payment.id} payment={payment} isMyPayment={true} />
           ))}
           {myPayments.length === 0 && (
-            <Card className="surface-elevated">
+            <Card className="surface-dark">
               <CardContent className="p-8 text-center">
                 <p className="text-muted-foreground">No payments made for others yet</p>
               </CardContent>
@@ -173,7 +173,7 @@ export function FriendPayments() {
             <PaymentCard key={payment.id} payment={payment} isMyPayment={false} />
           ))}
           {otherPayments.length === 0 && (
-            <Card className="surface-elevated">
+            <Card className="surface-dark">
               <CardContent className="p-8 text-center">
                 <p className="text-muted-foreground">No pending payments to return</p>
               </CardContent>

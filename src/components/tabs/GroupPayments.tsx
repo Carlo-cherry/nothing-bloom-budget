@@ -177,7 +177,7 @@ export function GroupPayments() {
       </div>
 
       {showForm && (
-        <Card className="surface-elevated border-primary/20 shadow-xl animate-in slide-in-from-top-4 duration-300">
+        <Card className="surface-dark border-primary/20 shadow-xl animate-in slide-in-from-top-4 duration-300 hover:border-primary/40 transition-all">
           <CardHeader>
             <CardTitle className="text-xl flex items-center gap-3">
               <div className="w-2 h-6 bg-gradient-to-b from-primary to-primary/60 rounded-full"></div>
@@ -275,7 +275,7 @@ export function GroupPayments() {
               </div>
 
               {formData.splitType === "equal" && formData.totalAmount && (
-                <div className="p-4 rounded-lg surface-glow border border-primary/20">
+                <div className="p-4 rounded-lg surface-darker border border-primary/20">
                   <p className="text-sm text-muted-foreground mb-2 font-medium">Split Preview:</p>
                   <p className="text-lg font-semibold text-primary">
                     Each person pays: ₹{(
@@ -328,7 +328,7 @@ export function GroupPayments() {
 
       <div className="space-y-3">
         {payments.map((payment) => (
-          <Card key={payment.id} className="surface-elevated border-border/50 hover:border-primary/30 transition-all duration-200 hover:scale-[1.01] group shadow-md hover:shadow-lg">
+          <Card key={payment.id} className="surface-dark border-border/30 hover:border-primary/30 transition-all duration-200 hover:scale-[1.01] group shadow-md hover:shadow-lg">
             <CardContent className="p-5">
               <div className="flex justify-between items-start mb-3">
                 <div>
@@ -367,7 +367,7 @@ export function GroupPayments() {
               
               <div className="space-y-3">
                 {payment.participants.map((participant, index) => (
-                  <div key={index} className="flex justify-between items-center p-3 rounded-lg surface-glow border border-border/30 hover:border-primary/30 transition-all duration-200">
+                  <div key={index} className="flex justify-between items-center p-3 rounded-lg surface-darker border border-border/20 hover:border-primary/30 transition-all duration-200">
                     <div className="flex items-center gap-3">
                       <Users size={14} className="text-muted-foreground" />
                       <span className="text-sm font-medium">{participant.name}</span>

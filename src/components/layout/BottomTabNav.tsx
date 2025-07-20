@@ -16,7 +16,7 @@ const tabs = [
 
 export function BottomTabNav({ activeTab, onTabChange }: BottomTabNavProps) {
   return (
-    <div className="fixed bottom-0 left-0 right-0 surface-elevated border-t border-border/50 backdrop-blur-lg bg-background/80 shadow-2xl">
+    <div className="fixed bottom-0 left-0 right-0 surface-dark border-t border-border/30 backdrop-blur-lg bg-background/90 shadow-2xl">
       <div className="flex justify-around items-center h-16 px-2 max-w-md mx-auto relative">
         <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-12 h-1 bg-primary/30 rounded-full"></div>
         {tabs.map((tab) => {
