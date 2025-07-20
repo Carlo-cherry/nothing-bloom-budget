@@ -2,41 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Nothing Phone 2a Expense Tracker Design System */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Nothing Phone Dark Theme */
+    --background: 222 84% 4.9%;
+    --foreground: 210 40% 98%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 225 84% 6%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 225 84% 6%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Nothing Electric Blue */
+    --primary: 195 100% 50%;
+    --primary-foreground: 222 84% 4.9%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 225 84% 10%;
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 225 84% 8%;
+    --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 225 84% 12%;
+    --accent-foreground: 195 100% 50%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 225 84% 12%;
+    --input: 225 84% 8%;
+    --ring: 195 100% 50%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
+
+    /* Custom Nothing Phone Variables */
+    --glow-primary: 195 100% 50%;
+    --glow-primary-soft: 195 100% 70%;
+    --surface-elevated: 225 84% 8%;
+    --surface-overlay: 225 84% 12%;
+    --nothing-blue: 195 100% 50%;
+    --nothing-blue-soft: 195 80% 60%;
+    --gradient-glow: linear-gradient(135deg, hsla(var(--glow-primary), 0.1), hsla(var(--glow-primary), 0.05));
+    --gradient-surface: linear-gradient(145deg, hsla(var(--surface-elevated), 1), hsla(var(--card), 1));
+    --shadow-glow: 0 0 20px hsla(var(--glow-primary), 0.3);
+    --shadow-soft: 0 4px 16px hsla(0, 0%, 0%, 0.5);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     --sidebar-background: 0 0% 98%;
 
@@ -101,5 +114,24 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .glow-primary {
+    box-shadow: var(--shadow-glow);
+  }
+  
+  .surface-elevated {
+    background: var(--gradient-surface);
+    border: 1px solid hsl(var(--border));
+  }
+  
+  .surface-glow {
+    background: var(--gradient-glow);
+  }
+  
+  .transition-smooth {
+    transition: var(--transition-smooth);
   }
 }
