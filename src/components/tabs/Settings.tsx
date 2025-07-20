@@ -134,10 +134,12 @@ export function Settings() {
     type: "categories" | "friends" | "paymentModes";
     placeholder: string;
   }) => (
-    <Card className="surface-elevated">
+    <Card className="surface-elevated border-primary/10 shadow-lg hover:shadow-xl transition-all duration-300">
       <CardHeader className="pb-3">
-        <CardTitle className="flex items-center gap-2 text-lg">
-          <Icon className="text-primary" size={20} />
+        <CardTitle className="flex items-center gap-3 text-xl">
+          <div className="p-2 rounded-full bg-primary/10 border border-primary/20">
+            <Icon className="text-primary" size={20} />
+          </div>
           Manage {title}
         </CardTitle>
       </CardHeader>
@@ -146,7 +148,7 @@ export function Settings() {
           <DialogTrigger asChild>
             <Button 
               onClick={() => setDialogOpen(type)}
-              className="w-full glow-primary"
+              className="w-full glow-primary hover:scale-105 transition-all duration-200 shadow-lg"
               variant="outline"
             >
               <Plus size={16} className="mr-2" />
@@ -195,15 +197,15 @@ export function Settings() {
           {items.map((item) => (
             <div 
               key={item.id} 
-              className="flex items-center justify-between p-3 rounded surface-glow"
+              className="flex items-center justify-between p-4 rounded-lg surface-glow border border-border/50 hover:border-primary/30 transition-all duration-200 hover:scale-[1.01] group"
             >
-              <span className="font-medium">{item.name}</span>
+              <span className="font-semibold text-foreground group-hover:text-primary transition-colors">{item.name}</span>
               <div className="flex gap-1">
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => handleEdit(item, type)}
-                  className="h-8 w-8 p-0 hover:bg-primary/20"
+                  className="h-8 w-8 p-0 hover:bg-primary/20 hover:text-primary transition-all duration-200"
                 >
                   <Edit size={14} />
                 </Button>
@@ -211,7 +213,7 @@ export function Settings() {
                   variant="ghost"
                   size="sm"
                   onClick={() => handleDelete(item.id, type, item.name)}
-                  className="h-8 w-8 p-0 text-destructive hover:text-destructive hover:bg-destructive/20"
+                  className="h-8 w-8 p-0 text-destructive hover:text-destructive hover:bg-destructive/20 transition-all duration-200"
                 >
                   <Trash2 size={14} />
                 </Button>
@@ -219,7 +221,7 @@ export function Settings() {
             </div>
           ))}
           {items.length === 0 && (
-            <div className="text-center py-8 text-muted-foreground">
+            <div className="text-center py-12 text-muted-foreground">
               No {title.toLowerCase()} added yet
             </div>
           )}
@@ -231,8 +233,10 @@ export function Settings() {
   return (
     <div className="space-y-6 pb-20">
       <div className="text-center">
-        <h1 className="text-2xl font-bold text-foreground">Settings</h1>
-        <p className="text-muted-foreground">Manage your app preferences</p>
+        <h1 className="text-3xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+          Settings
+        </h1>
+        <p className="text-muted-foreground text-lg">Manage your app preferences</p>
       </div>
 
       <SettingsSection
@@ -260,30 +264,33 @@ export function Settings() {
       />
 
       {/* App Info */}
-      <Card className="surface-elevated">
+      <Card className="surface-elevated border-primary/10 shadow-lg">
         <CardHeader>
-          <CardTitle className="text-lg">App Information</CardTitle>
+          <CardTitle className="text-xl flex items-center gap-3">
+            <div className="w-2 h-6 bg-gradient-to-b from-primary to-primary/60 rounded-full"></div>
+            App Information
+          </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3">
-          <div className="flex justify-between">
+        <CardContent className="space-y-4">
+          <div className="flex justify-between items-center p-3 rounded-lg surface-glow">
             <span className="text-muted-foreground">Version</span>
-            <span>1.0.0</span>
+            <span className="font-semibold">1.0.0</span>
           </div>
-          <div className="flex justify-between">
+          <div className="flex justify-between items-center p-3 rounded-lg surface-glow">
             <span className="text-muted-foreground">Theme</span>
-            <span>Nothing Phone Dark</span>
+            <span className="font-semibold">Nothing Phone Dark</span>
           </div>
-          <div className="flex justify-between">
+          <div className="flex justify-between items-center p-3 rounded-lg surface-glow">
             <span className="text-muted-foreground">Categories</span>
-            <span>{categories.length}</span>
+            <span className="font-semibold text-primary">{categories.length}</span>
           </div>
-          <div className="flex justify-between">
+          <div className="flex justify-between items-center p-3 rounded-lg surface-glow">
             <span className="text-muted-foreground">Friends</span>
-            <span>{friends.length}</span>
+            <span className="font-semibold text-primary">{friends.length}</span>
           </div>
-          <div className="flex justify-between">
+          <div className="flex justify-between items-center p-3 rounded-lg surface-glow">
             <span className="text-muted-foreground">Payment Methods</span>
-            <span>{paymentModes.length}</span>
+            <span className="font-semibold text-primary">{paymentModes.length}</span>
           </div>
         </CardContent>
       </Card>

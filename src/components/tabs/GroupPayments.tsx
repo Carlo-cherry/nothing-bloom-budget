@@ -161,12 +161,14 @@ export function GroupPayments() {
     <div className="space-y-6 pb-20">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Group Payments</h1>
-          <p className="text-muted-foreground">Split expenses with multiple people</p>
+          <h1 className="text-3xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+            Group Payments
+          </h1>
+          <p className="text-muted-foreground text-lg">Split expenses with multiple people</p>
         </div>
         <Button 
           onClick={() => setShowForm(true)}
-          className="glow-primary"
+          className="glow-primary hover:scale-105 transition-all duration-200 shadow-lg"
           size="sm"
         >
           <Plus size={16} className="mr-1" />
@@ -175,9 +177,12 @@ export function GroupPayments() {
       </div>
 
       {showForm && (
-        <Card className="surface-elevated">
+        <Card className="surface-elevated border-primary/20 shadow-xl animate-in slide-in-from-top-4 duration-300">
           <CardHeader>
-            <CardTitle>{editingPayment ? "Edit Group Payment" : "Create Group Payment"}</CardTitle>
+            <CardTitle className="text-xl flex items-center gap-3">
+              <div className="w-2 h-6 bg-gradient-to-b from-primary to-primary/60 rounded-full"></div>
+              {editingPayment ? "Edit Group Payment" : "Create Group Payment"}
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -270,9 +275,9 @@ export function GroupPayments() {
               </div>
 
               {formData.splitType === "equal" && formData.totalAmount && (
-                <div className="p-3 rounded surface-glow">
-                  <p className="text-sm text-muted-foreground mb-2">Split Preview:</p>
-                  <p className="text-sm">
+                <div className="p-4 rounded-lg surface-glow border border-primary/20">
+                  <p className="text-sm text-muted-foreground mb-2 font-medium">Split Preview:</p>
+                  <p className="text-lg font-semibold text-primary">
                     Each person pays: ₹{(
                       parseFloat(formData.totalAmount || "0") / 
                       (formData.selectedFriends.length + (formData.includeSelf ? 1 : 0))
@@ -309,10 +314,10 @@ export function GroupPayments() {
               </div>
 
               <div className="flex gap-2">
-                <Button type="submit" className="glow-primary" disabled={formData.selectedFriends.length === 0}>
+                <Button type="submit" className="glow-primary hover:scale-105 transition-all duration-200" disabled={formData.selectedFriends.length === 0}>
                   {editingPayment ? "Update Group Payment" : "Create Group Payment"}
                 </Button>
-                <Button type="button" variant="outline" onClick={resetForm}>
+                <Button type="button" variant="outline" onClick={resetForm} className="hover:scale-105 transition-all duration-200">
                   Cancel
                 </Button>
               </div>
@@ -323,19 +328,19 @@ export function GroupPayments() {
 
       <div className="space-y-3">
         {payments.map((payment) => (
-          <Card key={payment.id} className="surface-elevated">
-            <CardContent className="p-4">
+          <Card key={payment.id} className="surface-elevated border-border/50 hover:border-primary/30 transition-all duration-200 hover:scale-[1.01] group shadow-md hover:shadow-lg">
+            <CardContent className="p-5">
               <div className="flex justify-between items-start mb-3">
                 <div>
-                  <div className="font-medium mb-1">{payment.description}</div>
-                  <div className="text-sm text-muted-foreground">
+                  <div className="font-semibold text-foreground group-hover:text-primary transition-colors mb-1">{payment.description}</div>
+                  <div className="text-sm text-muted-foreground font-medium">
                     Paid by {payment.paidBy} • {new Date(payment.date).toLocaleDateString()}
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="text-right">
-                    <div className="font-bold text-lg">₹{payment.totalAmount.toFixed(2)}</div>
-                    <div className="text-xs text-muted-foreground">
+                    <div className="font-bold text-xl text-primary drop-shadow-sm">₹{payment.totalAmount.toFixed(2)}</div>
+                    <div className="text-xs text-muted-foreground font-medium">
                       {payment.splitType === "equal" ? "Equal Split" : "Custom Split"}
                     </div>
                   </div>
@@ -344,7 +349,7 @@ export function GroupPayments() {
                       variant="ghost"
                       size="sm"
                       onClick={() => handleEdit(payment)}
-                      className="h-8 w-8 p-0"
+                      className="h-8 w-8 p-0 hover:bg-primary/10 hover:text-primary transition-all duration-200"
                     >
                       <Edit size={14} />
                     </Button>
@@ -352,7 +357,7 @@ export function GroupPayments() {
                       variant="ghost"
                       size="sm"
                       onClick={() => handleDelete(payment.id)}
-                      className="h-8 w-8 p-0 text-destructive hover:text-destructive"
+                      className="h-8 w-8 p-0 text-destructive hover:text-destructive hover:bg-destructive/10 transition-all duration-200"
                     >
                       <Trash2 size={14} />
                     </Button>
@@ -360,24 +365,26 @@ export function GroupPayments() {
                 </div>
               </div>
               
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {payment.participants.map((participant, index) => (
-                  <div key={index} className="flex justify-between items-center p-2 rounded surface-glow">
-                    <div className="flex items-center gap-2">
+                  <div key={index} className="flex justify-between items-center p-3 rounded-lg surface-glow border border-border/30 hover:border-primary/30 transition-all duration-200">
+                    <div className="flex items-center gap-3">
                       <Users size={14} className="text-muted-foreground" />
-                      <span className="text-sm">{participant.name}</span>
+                      <span className="text-sm font-medium">{participant.name}</span>
                       {participant.settled && (
-                        <span className="text-xs bg-green-900/20 text-green-400 px-2 py-1 rounded">Settled</span>
+                        <span className="text-xs bg-green-900/20 text-green-400 px-2 py-1 rounded-full font-medium border border-green-400/30">Settled</span>
                       )}
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium">₹{participant.amount.toFixed(2)}</span>
+                      <span className="text-sm font-bold text-primary">₹{participant.amount.toFixed(2)}</span>
                       {!participant.includeSelf && (
                         <Button
                           variant="outline"
                           size="sm"
                           onClick={() => toggleSettle(payment.id, index)}
-                          className={`h-6 text-xs ${participant.settled ? 'bg-green-900/20 border-green-400 text-green-400' : ''}`}
+                          className={`h-6 text-xs transition-all duration-200 hover:scale-105 ${
+                            participant.settled ? 'bg-green-900/20 border-green-400 text-green-400' : 'hover:bg-primary/10 hover:border-primary'
+                          }`}
                         >
                           {participant.settled ? 'Settled' : 'Settle'}
                         </Button>

@@ -100,12 +100,14 @@ export function PersonalExpenses() {
     <div className="space-y-6 pb-20">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Personal Expenses</h1>
-          <p className="text-muted-foreground">Track your spending</p>
+          <h1 className="text-3xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+            Personal Expenses
+          </h1>
+          <p className="text-muted-foreground text-lg">Track your spending habits</p>
         </div>
         <Button 
           onClick={() => setShowForm(true)}
-          className="glow-primary"
+          className="glow-primary hover:scale-105 transition-all duration-200 shadow-lg"
           size="sm"
         >
           <Plus size={16} className="mr-1" />
@@ -114,9 +116,12 @@ export function PersonalExpenses() {
       </div>
 
       {showForm && (
-        <Card className="surface-elevated">
+        <Card className="surface-elevated border-primary/20 shadow-xl animate-in slide-in-from-top-4 duration-300">
           <CardHeader>
-            <CardTitle>{editingExpense ? "Edit Expense" : "Add New Expense"}</CardTitle>
+            <CardTitle className="text-xl flex items-center gap-3">
+              <div className="w-2 h-6 bg-gradient-to-b from-primary to-primary/60 rounded-full"></div>
+              {editingExpense ? "Edit Expense" : "Add New Expense"}
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -200,10 +205,10 @@ export function PersonalExpenses() {
               </div>
 
               <div className="flex gap-2">
-                <Button type="submit" className="glow-primary">
+                <Button type="submit" className="glow-primary hover:scale-105 transition-all duration-200">
                   {editingExpense ? "Update" : "Add Expense"}
                 </Button>
-                <Button type="button" variant="outline" onClick={resetForm}>
+                <Button type="button" variant="outline" onClick={resetForm} className="hover:scale-105 transition-all duration-200">
                   Cancel
                 </Button>
               </div>
@@ -214,28 +219,28 @@ export function PersonalExpenses() {
 
       <div className="space-y-3">
         {expenses.map((expense) => (
-          <Card key={expense.id} className="surface-elevated">
-            <CardContent className="p-4">
+          <Card key={expense.id} className="surface-elevated border-border/50 hover:border-primary/30 transition-all duration-200 hover:scale-[1.01] group shadow-md hover:shadow-lg">
+            <CardContent className="p-5">
               <div className="flex justify-between items-start">
                 <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-medium">{expense.description}</span>
-                    <span className="text-xs bg-primary/20 text-primary px-2 py-1 rounded">
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="font-semibold text-foreground group-hover:text-primary transition-colors">{expense.description}</span>
+                    <span className="text-xs bg-primary/20 text-primary px-3 py-1 rounded-full font-medium border border-primary/30">
                       {expense.category}
                     </span>
                   </div>
-                  <div className="text-sm text-muted-foreground">
+                  <div className="text-sm text-muted-foreground font-medium">
                     {expense.paymentMode} • {new Date(expense.date).toLocaleDateString()}
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="font-bold text-lg">₹{expense.amount.toFixed(2)}</span>
+                  <span className="font-bold text-xl text-primary drop-shadow-sm">₹{expense.amount.toFixed(2)}</span>
                   <div className="flex gap-1">
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={() => handleEdit(expense)}
-                      className="h-8 w-8 p-0"
+                      className="h-8 w-8 p-0 hover:bg-primary/10 hover:text-primary transition-all duration-200"
                     >
                       <Edit size={14} />
                     </Button>
@@ -243,7 +248,7 @@ export function PersonalExpenses() {
                       variant="ghost"
                       size="sm"
                       onClick={() => handleDelete(expense.id)}
-                      className="h-8 w-8 p-0 text-destructive hover:text-destructive"
+                      className="h-8 w-8 p-0 text-destructive hover:text-destructive hover:bg-destructive/10 transition-all duration-200"
                     >
                       <Trash2 size={14} />
                     </Button>

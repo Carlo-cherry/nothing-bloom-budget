@@ -65,32 +65,32 @@ export function FriendPayments() {
   };
 
   const PaymentCard = ({ payment, isMyPayment }: { payment: Payment; isMyPayment: boolean }) => (
-    <Card className="surface-elevated">
-      <CardContent className="p-4">
+    <Card className="surface-elevated border-border/50 hover:border-primary/30 transition-all duration-200 hover:scale-[1.01] group shadow-md hover:shadow-lg">
+      <CardContent className="p-5">
         <div className="flex justify-between items-start">
           <div className="flex-1">
-            <div className="flex items-center gap-2 mb-1">
-              <span className="font-medium">{payment.description}</span>
+            <div className="flex items-center gap-3 mb-2">
+              <span className="font-semibold text-foreground group-hover:text-primary transition-colors">{payment.description}</span>
               {payment.settled && (
-                <CheckCircle size={16} className="text-green-400" />
+                <CheckCircle size={16} className="text-green-400 drop-shadow-sm" />
               )}
             </div>
-            <div className="text-sm text-muted-foreground mb-2">
+            <div className="text-sm text-muted-foreground mb-2 font-medium">
               {isMyPayment ? `You paid for ${payment.friend}` : `${payment.friend} paid for you`}
             </div>
-            <div className="text-xs text-muted-foreground">
+            <div className="text-xs text-muted-foreground font-medium">
               {new Date(payment.date).toLocaleDateString()}
             </div>
           </div>
           <div className="flex items-center gap-2">
             <div className="text-right">
-              <div className={`font-bold text-lg flex items-center gap-1 ${
+              <div className={`font-bold text-xl flex items-center gap-2 drop-shadow-sm ${
                 isMyPayment ? 'text-green-400' : 'text-red-400'
               }`}>
                  {isMyPayment ? <ArrowLeft size={16} /> : <ArrowRight size={16} />}
                 ₹{payment.amount.toFixed(2)}
               </div>
-              <div className="text-xs text-muted-foreground">
+              <div className="text-xs text-muted-foreground font-medium">
                 {payment.settled ? 'Settled' : 'Pending'}
               </div>
             </div>
@@ -98,7 +98,9 @@ export function FriendPayments() {
               variant="outline"
               size="sm"
               onClick={() => toggleSettled(payment.id, isMyPayment)}
-              className={payment.settled ? 'bg-green-900/20 border-green-400' : ''}
+              className={`transition-all duration-200 hover:scale-105 ${
+                payment.settled ? 'bg-green-900/20 border-green-400 text-green-400' : 'hover:bg-primary/10 hover:border-primary'
+              }`}
             >
               {payment.settled ? 'Settled' : 'Mark Paid'}
             </Button>
@@ -114,33 +116,35 @@ export function FriendPayments() {
   return (
     <div className="space-y-6 pb-20">
       <div className="text-center">
-        <h1 className="text-2xl font-bold text-foreground">Friend Payments</h1>
-        <p className="text-muted-foreground">Track shared expenses</p>
+        <h1 className="text-3xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+          Friend Payments
+        </h1>
+        <p className="text-muted-foreground text-lg">Track shared expenses with friends</p>
       </div>
 
       {/* Summary Cards */}
       <div className="grid grid-cols-2 gap-4">
-        <Card className="surface-elevated border-green-400/20">
-          <CardContent className="p-4 text-center">
-            <div className="text-green-400 font-bold text-xl">
+        <Card className="surface-elevated border-green-400/20 hover:border-green-400/40 transition-all duration-300 hover:scale-[1.02] group shadow-lg">
+          <CardContent className="p-5 text-center">
+            <div className="text-green-400 font-bold text-2xl drop-shadow-sm group-hover:scale-105 transition-transform">
               ₹{pendingOwed.toFixed(2)}
             </div>
-            <div className="text-sm text-muted-foreground">Friends owe you</div>
+            <div className="text-sm text-muted-foreground font-medium mt-1">Friends owe you</div>
           </CardContent>
         </Card>
         
-        <Card className="surface-elevated border-red-400/20">
-          <CardContent className="p-4 text-center">
-            <div className="text-red-400 font-bold text-xl">
+        <Card className="surface-elevated border-red-400/20 hover:border-red-400/40 transition-all duration-300 hover:scale-[1.02] group shadow-lg">
+          <CardContent className="p-5 text-center">
+            <div className="text-red-400 font-bold text-2xl drop-shadow-sm group-hover:scale-105 transition-transform">
               ₹{pendingToReturn.toFixed(2)}
             </div>
-            <div className="text-sm text-muted-foreground">You owe friends</div>
+            <div className="text-sm text-muted-foreground font-medium mt-1">You owe friends</div>
           </CardContent>
         </Card>
       </div>
 
       <Tabs defaultValue="my-payments" className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
+        <TabsList className="grid w-full grid-cols-2 bg-muted/50 p-1 rounded-lg">
           <TabsTrigger value="my-payments">My Payments</TabsTrigger>
           <TabsTrigger value="other-payments">Other Payments</TabsTrigger>
         </TabsList>
